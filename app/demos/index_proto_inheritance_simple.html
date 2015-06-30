@@ -1,0 +1,19 @@
+<script>
+
+var b = {
+	id:2
+};
+
+var c = Object.create(b);
+var d = Object.create(b);
+
+//console.dir(c);
+console.log(c.id);
+console.log(d.id);
+b.id = 3;
+d.id = 4;
+delete d.id;
+console.log(c.id);
+console.log(d.id);
+
+</script>

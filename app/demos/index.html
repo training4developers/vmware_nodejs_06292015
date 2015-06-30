@@ -1,0 +1,31 @@
+<script>
+
+function B() {
+	this.id = 2;
+}
+
+B.prototype.showId = function() {
+	console.log(this.id);
+};
+
+function C() {
+	B.call(this);
+	this.id = 3;
+}
+
+C.prototype = Object.create(B.prototype);
+C.prototype.constructor = C;
+C.prototype.showId = function() {
+	console.log("show id from c: " + this.id);
+};
+
+var c = new C();
+c.showId();
+
+//var b = Object.create(B.prototype);
+//B.call(b);
+
+console.log(c);
+
+
+</script>

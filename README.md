@@ -1,2 +1,12 @@
-# vmware_nodejs_06292015
-Node.js code demonstrations for VMWare class on 06/29/2015.
+# Welcome to Introduction to Node.js!
+
+Instructor: Eric Greene
+
+Schedule: Monday through Wednesday, 9am to 4:30pm
+
+Breaks:
+	Morning: 10:30am to 10:45am
+	Lunch: Noon to 1pm
+	Afternoon: 2:45pm to 3pm
+
+Class Introductions...
