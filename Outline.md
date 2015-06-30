@@ -9,13 +9,6 @@
 	- Commands
 	- Running Code
 	- Exercise: REPL Practice
-- Packages & Modules
-	- Using Modules
-	- Creating Modules
-	- Packages
-		- NPM Init
-		- Installing/Removing Packages
-	- Exercise: Create an empty package
 - JavaScript Review
 	- Types: Primitives and Objects
 		- Values
@@ -41,6 +34,16 @@
 		- Mixins
 		- Chaining
 		- Builder
+
+## Day 2 Outline
+
+- Packages & Modules
+	- Using Modules
+	- Creating Modules
+	- Packages
+		- NPM Init
+		- Installing/Removing Packages
+	- Exercise: Create an empty package
 - Events
 	- emit
 	- on
@@ -61,8 +64,6 @@
 - JavaScript Promises
 	- Q Promises
 	- EMCA Script 6 Promises
-
-
 - Process
 	- Command Line Arguments
 	- Standard Streams
@@ -80,6 +81,7 @@
 	- ArrayBuffer
 	- Buffer
 
-## Day 2 Outline
-
 ## Day 3 Outline
+
+- Express
+- Socket.io
