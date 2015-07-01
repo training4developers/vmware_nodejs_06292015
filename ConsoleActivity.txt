@@ -1,0 +1,15 @@
+https://github.com/training4developers/vmware_nodejs_06292015
+
+Build a simple console app to collect data from the user.
+
+Ask for the following information:
+
+First Name
+Last Name
+Date of Birth
+Email
+Phone
+
+Store all data in a model object which inherits from BaseModel
+
+Output the model to the screen with the util.inspect.

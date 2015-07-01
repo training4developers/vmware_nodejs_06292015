@@ -1,0 +1,77 @@
+<!doctype html>
+
+<html>
+	<head>
+		<title>Socket.IO File Upload</title>
+		<style>
+
+			.dropzone {
+				width:200px;
+				height:200px;
+				border: 3px dashed gray;
+			}
+
+			.dropzone.active {
+				border: 3px dashed red;
+			}
+
+		</style>
+	</head>
+
+	<body>
+		<div id="dropzone" class="dropzone"></div>
+		<script src="/socket.io/socket.io.js"></script>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script>
+
+			window.addEventListener("DOMContentLoaded", function() {
+
+				var socket = io();
+
+				var dz = document.getElementById("dropzone");
+
+				dz.addEventListener("dragover", function(e) {
+					e.preventDefault();
+					dz.classList.add("active");
+					console.log("dragover");
+				});
+
+				dz.addEventListener("dragleave", function(e) {
+					e.preventDefault();
+					dz.classList.remove("active");
+					console.log("dragleave");
+				});
+
+				dz.addEventListener("drop", function(e) {
+					e.preventDefault();
+					dz.classList.remove("active");
+					console.dir(e.dataTransfer.files);
+					console.log("drop");
+
+					for (var x=0; x<e.dataTransfer.files.length; x++) {
+
+							var
+								file = e.dataTransfer.files[x],
+								fileName = file.name,
+								fr = new FileReader();
+
+							fr.readAsArrayBuffer(file);
+
+							fr.addEventListener("loadend", function() {
+								socket.emit("uploadfile", {
+									fileName: fileName,
+									fileData: fr.result
+								});
+							});
+
+					}
+
+				});
+
+			});
+
+
+
+		</script>
+	</body>
+</html>

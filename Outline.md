@@ -62,7 +62,6 @@
 	- Asynchronous Execution
 	- Creating Asynchronous Callbacks
 - JavaScript Promises
-	- Q Promises
 	- EMCA Script 6 Promises
 - Process
 	- Command Line Arguments
@@ -70,18 +69,22 @@
 	- Process Object
 	- Signal Events
 	- Environment Variables
+
+## Day 3 Outline
+
 - File System
 	- path & fs modules
 	- Cross Platform Paths
 	- Basic File System Operations
+	- Bluebird Promisify
+		- JavaScript Promises
+			- Bluebird Promises
 - Streams
 	- Readable streams
 	- Writable streams
 - Binary Data
 	- ArrayBuffer
 	- Buffer
-
-## Day 3 Outline
-
 - Express
+
 - Socket.io

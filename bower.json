@@ -1,0 +1,20 @@
+{
+  "name": "vmware_nodejs_06282015",
+  "version": "0.0.0",
+  "homepage": "https://github.com/training4developers/vmware_nodejs_06292015",
+  "authors": [
+    "Eric W. Greene <eric@training4developers.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/www/libs",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}
