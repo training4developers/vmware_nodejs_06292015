@@ -5,7 +5,8 @@ var
 	io = require('socket.io')(http)
 	path = require("path"),
 	util = require("util"),
-	fs = require("fs");
+	fs = require("fs"),
+	Promise = require("bluebird");
 
 /*
 app.get("/", function(req, res){
@@ -13,6 +14,19 @@ app.get("/", function(req, res){
 });
 */
 
+var originalExists = fs.exists;
+
+fs.exists = function(filePath, callBack) {
+
+	originalExists(filePath, function(exists) {
+		var err = null;
+		callBack(err, exists);
+	});
+
+};
+
+
+Promise.promisifyAll(fs);
 
 app.use(function(req, res, next) {
 
@@ -21,6 +35,12 @@ app.use(function(req, res, next) {
 
 	var filePath = path.join(__dirname, "www", req.path);
 	console.log("file path: " + filePath);
+
+	fs.existsAsync(filePath).then(function(result) {
+		console.log("output: " + result);
+	}).catch(function(e) {
+    console.log(util.inspect(e));
+	});
 
 	if (fs.exists(filePath, function(exists) {
 		if (exists) {
