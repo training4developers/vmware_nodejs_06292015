@@ -9,7 +9,85 @@ var
 	Promise = require("bluebird"),
 	zlib = require("zlib");
 
-app.use(express.static("www"));
+	//console.log(util.inspect(zlib, false, 0));
+
+/*
+app.get("/", function(req, res){
+	res.sendFile(path.join(__dirname, "www", "index.html"));
+});
+*/
+
+var originalExists = fs.exists;
+fs.exists = function(filePath, callBack) {
+	originalExists(filePath, function(exists) {
+		if (!exists) {
+			callBack(new Error("file does not exist"), false);
+		}
+		callBack(null, true);
+	});
+};
+
+Promise.promisifyAll(fs);
+
+app.use(function(req, res, next) {
+
+	var filePath = path.join(__dirname, "www", req.path);
+
+	fs.existsAsync(filePath).then(function(result) {
+
+		//return fs.readFileAsync(filePath);
+
+		switch (path.extname(filePath)) {
+			case ".html":
+				res.set("Content-Type", "text/html");
+				break;
+			case ".js":
+				res.set("Content-Type", "application/javascript");
+				break;
+			case ".css":
+				res.set("Content-Type", "text/css");
+				break;
+			default:
+				res.set("Content-Type", "text/plain");
+				break;
+		}
+
+		//res.set("Content-Encoding", "gzip");
+
+		var gzip = zlib.createGzip();
+		var fileInput = fs.createReadStream(filePath);
+
+		res.on("finish", function() {
+			console.log("response is finished!");
+		});
+
+		res.status(200);
+		//fileInput.pipe(gzip).pipe(res);
+		fileInput.pipe(res, { end: false });
+
+		fileInput.on("end", function() {
+			res.end("something else");
+		});
+	});
+
+	/*
+	).then(function(fileData) {
+
+		//var output = fs.createWriteStream("output.txt");
+
+		input.pipe(gunzip).pipe(output);
+
+
+		res.status(200).end(fileData.toString());
+
+	}).catch(function(err) {
+		res.status(404).end(err.message);
+	});
+	*/
+
+});
+
+//app.use(express.static("www"));
 
 io.on('connection', function(socket){
 
@@ -20,21 +98,6 @@ io.on('connection', function(socket){
 
 	socket.on('chat message', function(msg){
 		io.emit('chat message', msg);
-	});
-
-	socket.on("upload", function(fileInfo) {
-
-		var filePath = path.join(__dirname, "uploads", fileInfo.fileName);
-
-		fs.writeFile(filePath, fileInfo.fileData, function(err) {
-
-			if (err) {
-				socket.emit("upload result", err.message)
-			}
-
-			socket.emit("upload result", "success");
-		});
-
 	});
 
 });

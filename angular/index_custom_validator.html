@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Training</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<style>
+
+			/*
+			input.ng-invalid.ng-touched {
+				border: 3px solid red;
+			}
+			*/
+
+			.red-box {
+				border: 3px solid red;
+			}
+
+		</style>
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+
+				<form name="contactForm" novalidate xng-submit="submitForm()">
+					<div>
+						<label for="firstName">First Name</label>
+						<input type="text" krequired
+							ng-model="person.firstName" name="firstName"
+							id="firstName" value=""
+							ng-class="{'red-box':contactForm.firstName.$invalid
+							&& contactForm.firstName.$touched}">
+						<span ng-show="contactForm.firstName.$invalid
+						&& contactForm.firstName.$touched">
+							This field is required!
+						</span>
+					</div>
+
+					<div>
+						<label for="age">Age</label>
+						<input type="number" ng-model="person.age"
+							name="age" id="age" value="">
+					</div>
+
+					<div>
+						<label for="isCitizen">UK Citizen</label>
+						<input type="checkbox" ng-model="person.isCitizen"
+							name="isCitizen" id="isCitizen" required>
+					</div>
+
+					<div>
+						<label for="comments">Comments</label>
+						<textarea  ng-model="person.comments"
+							name="comments" id="comments" required
+							rows="5" cols="40"></textarea>
+					</div>
+
+					<div>
+						<label for="birthLocationEngland">England:</label>
+						<input type="radio" ng-model="person.birthLocation"
+							name="birthLocation" value="England"
+							id="birthLocationEngland">
+					</div>
+
+					<div>
+						<label for="birthLocationWales">Wales:</label>
+						<input type="radio" ng-model="person.birthLocation"
+							name="birthLocation" value="Wales"
+							id="birthLocationWales">
+					</div>
+
+					<div>
+						<label for="birthLocationScotland">Scotland:</label>
+						<input type="radio" ng-model="person.birthLocation"
+							name="birthLocation" value="Scotland"
+							id="birthLocationScotland">
+					</div>
+
+					<div>
+						<label for="birthLocationNorthernIreland">Northern Ireland:</label>
+						<input type="radio" ng-model="person.birthLocation"
+							name="birthLocation" value="Northern Ireland"
+							id="birthLocationNorthernIreland">
+					</div>
+
+					<div>
+						<label for="homeOffice">Home Office</label>
+
+						<select ng-model="person.homeOffice"
+							id="homeOffice" name="homeOffice"
+							ng-options="officeLocation.officeId as officeLocation.officeDesc
+								group by officeLocation.officeCountry
+								for officeLocation in officeLocations">
+						</select>
+					</div>
+
+					<button type="button" ng-click="submitForm()">Submit Me!</button>
+
+				</form>
+
+			</div>
+		</div>
+
+		<script>
+
+			angular.module("MyApp", [])
+				.directive("krequired", function() {
+
+					// directive definition object
+					return {
+						require: "ngModel",
+						link: function(scope, element, attrs, ctrl) {
+
+							function validate(value) {
+
+								if (value == null || String(value).length < 1) {
+									ctrl.$setValidity("krequired", false);
+								} else {
+									ctrl.$setValidity("krequired", true);
+								}
+
+								return value;
+							}
+
+							ctrl.$formatters.push(validate);
+							ctrl.$parsers.push(validate);
+						}
+					};
+
+				})
+				.controller("MyCtrl", function($scope) {
+
+					$scope.person = {
+						//homeOffice: 3
+					};
+
+					$scope.officeLocations = [
+						{ officeId: 1, officeDesc: "Manchester", officeCountry: "UK" },
+						{ officeId: 2, officeDesc: "Florham Park, NJ", officeCountry: "US" },
+						{ officeId: 3, officeDesc: "Tulsa, OK", officeCountry: "US" },
+						{ officeId: 4, officeDesc: "Tokyo", officeCountry: "JP" }
+					];
+
+					$scope.submitForm = function() {
+						console.log("form submit clicked...");
+						// add code to do something with the model data
+						console.dir($scope.contactForm);
+						console.dir($scope.person);
+
+					}
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

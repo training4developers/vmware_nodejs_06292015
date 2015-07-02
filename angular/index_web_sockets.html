@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		<title>Angular.js Training</title>
+		<script src="libs/jquery/dist/jquery.js"></script>
+		<script src="libs/angular/angular.js"></script>
+		<base href="/">
+	</head>
+
+	<body>
+
+		<div ng-app="MyApp">
+			<div ng-controller="MyCtrl">
+			</div>
+		</div>
+		<script>
+
+			angular.module("MyApp", [])
+				.constant("WebSocketURL", "ws://localhost:8080")
+				.factory("WebSocket", function(WebSocketURL) {
+
+					var ws;
+
+					var p = new Promise(function(resolve, reject) {
+						ws = new WebSocket(WebSocketURL);
+						ws.addEventListener("open", function() {
+							resolve();
+						});
+						ws.addEventListener("error", function(err) {
+							reject(err);
+						});
+					});
+
+					return {
+						send: function(msgType, msgData) {
+							p.then(function() {
+								ws.send(JSON.stringify({
+									messageType: msgType,
+									messageData: msgData
+								}));
+							});
+						},
+						receive: function(callbackFn) {
+							ws.addEventListener("message", callbackFn);
+						}
+					}
+
+
+				})
+				.config(function($provide) {
+
+					$provide.decorator("$log", function($delegate, WebSocket) {
+
+						var originalLog = $delegate.log;
+						$delegate.log = function(message) {
+							originalLog(message);
+							WebSocket.send("log", {
+								source: "JavaScript",
+								message: message,
+								severity: 0
+							});
+						};
+						return $delegate;
+					});
+
+				})
+				.controller("MyCtrl", function($log, WebSocket) {
+
+					WebSocket.receive(function() {
+						console.log(arguments);
+					});
+
+					$log.log("This is a test too!");
+
+				});
+
+		</script>
+
+	</body>
+
+</html>

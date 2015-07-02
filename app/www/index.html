@@ -49,7 +49,6 @@
           var file = e.dataTransfer.files[0];
 
           var fr = new FileReader();
-          fr.readAsArrayBuffer(file);
           fr.addEventListener("loadend", function() {
 
             socket.emit("upload", {
@@ -58,6 +57,7 @@
             });
 
           });
+          fr.readAsArrayBuffer(file);
 
         });
 
